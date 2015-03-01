@@ -1,13 +1,20 @@
-all: sicasm
+SRC := src
+BIN := bin
+INC := include
+BLD := build
 
-sicasm: sicasm.o hash_table.o
-	gcc sicasm.o hash_table.o -o sicasm
+all: $(BIN)/sicasm
 
-sicasm.o: sicasm.c
-	gcc sicasm.c -c
+$(BIN)/sicasm: $(BLD)/sicasm.o $(BLD)/hash_table.o
+	mkdir -p $(BIN)
+	gcc $(BLD)/sicasm.o $(BLD)/hash_table.o -o $(BIN)/sicasm
 
-hash_table.o: hash_table.c hash_table.h
-	gcc hash_table.c hash_table.h -c
+$(BLD)/sicasm.o: $(SRC)/sicasm.c
+	mkdir -p $(BLD)
+	gcc -c $(SRC)/sicasm.c -o $(BLD)/sicasm.o
+
+$(BLD)/hash_table.o: $(SRC)/hash_table.c $(INC)/hash_table.h
+	gcc -c $(SRC)/hash_table.c -o $(BLD)/hash_table.o 
 
 clean:
 	rm -rf *.o *.gch
