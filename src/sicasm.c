@@ -52,14 +52,14 @@ void read_file(HashTable *table, FILE *fp) {
             val[valIdx] = '\0';
             keyIdx = valIdx = 0;
             if (strlen(val) == 0) {
-                Node *n = lookup(table, key);
+                Node *n = find(table, key);
                 if (n != NULL) {
                     printf("Found %s at location %d with value %d.\n", key, hash(key), n->value);
                 } else {
                     printf("ERROR %s not found.\n", key);
                 }
             } else {
-                add_to_table(table, key, atoi(val));
+                insert(table, key, atoi(val));
             }
         }
     } 

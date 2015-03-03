@@ -1,6 +1,6 @@
 /*
- * p1.c
- * Contains all functions (besides main) used in Project 1.
+ * hash_table.c
+ * All hash table functions.
  *
  * Author: Jake Wilson
  * Date:   January 19, 2015
@@ -17,7 +17,7 @@
  * @param key:
  *          the key to find
  */
-Node *lookup(HashTable *table, const char *key) {
+Node *find(HashTable *table, const char *key) {
     int idx = hash(key);
     Node *n = table[idx];
     while (n != NULL) {
@@ -39,24 +39,20 @@ Node *lookup(HashTable *table, const char *key) {
  * @param value:
  *          the value of the node
  */
-void add_to_table(HashTable *table, const char *key, int value) {
+void insert(HashTable *table, const char *key, int value) {
     int idx = hash(key);
-    if (lookup(table, key) != NULL) { // make sure the key isn't already in the table
-        printf("ERROR %s already exists at location %d.\n", key, idx);
-    } else {
+    if (find(table, key) == NULL) {// make sure the key is not already in the hash table
         if (table[idx] == NULL) {
             table[idx] = new_node();
             strcpy(table[idx]->key, key);
             table[idx]->value = value;
         } else {
-            printf("%s collided with %s at index %d.\n", key, table[idx]->key, idx);
             Node *n = new_node();
             strcpy(n->key, key);
             n->value = value;
             n->n = table[idx];
             table[idx] = n;
         }
-        printf("Stored %s %d at location %d.\n", key, value, idx);
     }
 }
 

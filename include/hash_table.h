@@ -1,6 +1,6 @@
 /*
- * include.h
- * General header file for Project 1.
+ * hash_table.h
+ * General header file for the hash table.
  *
  * Author: Jake Wilson
  * Date:   January 12, 2015
@@ -32,6 +32,6 @@ int is_letter(char c);
 int is_digit(char c);
 int is_newline(char c);
 int is_cr(char c);
-void add_to_table(HashTable *table, const char *key, int value);
+void insert(HashTable *table, const char *key, int value);
 int hash(const char *key);
-Node *lookup(HashTable *table, const char *key);
+Node *find(HashTable *table, const char *key);
