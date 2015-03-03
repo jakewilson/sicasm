@@ -52,14 +52,8 @@ void read_file(HashTable *table, FILE *fp) {
             key[keyIdx] = '\0';
             val[valIdx] = '\0';
             keyIdx = valIdx = 0;
-            if (strlen(val) == 0) {
-                Node *n = find(table, key);
-                if (n != NULL) {
-                    printf("Found %s at location %d with value %d.\n", key, hash(key), n->value);
-                } else {
-                    printf("ERROR %s not found.\n", key);
-                }
-            } else {
+            // add to the table only if a key and a value are entered
+            if (strlen(val) != 0) { 
                 insert(table, key, atoi(val));
             }
         }
@@ -109,3 +103,26 @@ int is_newline(char c) {
 int is_cr(char c) {
     return (c == 13);
 }
+
+/*
+ * Determines if a character is a pound sign ('#')
+ * @param c:
+ *          the character to evaluate
+ * @return:
+ *          a non-zero integer if the character is a pound sign, zero if not
+ */
+int is_pound(char c) {
+    return (c == 35);
+}
+
+/*
+ * Determines if a character is an at sign ('@')
+ * @param c:
+ *          the character to evaluate
+ * @return:
+ *          a non-zero integer if the character is an at sign, zero if not
+ */
+int is_at_sign(char c) {
+    return (c == 64);
+}
+
