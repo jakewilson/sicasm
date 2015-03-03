@@ -10,7 +10,7 @@ $(BIN)/sicasm: $(BLD)/sicasm.o $(BLD)/hash_table.o
 	mkdir -p $(BIN)
 	$(CC) $(BLD)/sicasm.o $(BLD)/hash_table.o -o $(BIN)/sicasm
 
-$(BLD)/sicasm.o: $(SRC)/sicasm.c
+$(BLD)/sicasm.o: $(SRC)/sicasm.c $(INC)/sicasm.h
 	mkdir -p $(BLD)
 	$(CC) -c $(SRC)/sicasm.c -o $(BLD)/sicasm.o
 
@@ -18,4 +18,4 @@ $(BLD)/hash_table.o: $(SRC)/hash_table.c $(INC)/hash_table.h
 	$(CC) -c $(SRC)/hash_table.c -o $(BLD)/hash_table.o 
 
 clean:
-	rm -rf $(BLD)
+	rm -rf $(BLD) $(BIN)

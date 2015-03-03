@@ -82,52 +82,10 @@ Node *new_node() {
 
 /*
  * Allocates and initializes a new Hash Table
- * @return a newly initialized Hash Table
+ * @return 
+ *          a newly initialized Hash Table
  */
 HashTable *new_hashtable() {
     return calloc(TABLE_SIZE, sizeof(Node));
 }
 
-/*
- * Determines if a character is a letter, case-insensitive
- * @param c:
- *          the character to evaluate
- * @return:
- *          a non-zero integer if the character is a letter, zero if not
- */
-int is_letter(char c) {
-    return (c >= 97 && c <= 122) || (c >= 65 && c <= 90);
-}
-
-/*
- * Determines if a character is a digit
- * @param c:
- *          the character to evaluate
- * @return:
- *          a non-zero integer if the character is a digit, zero if not
- */
-int is_digit(char c) {
-    return (c >= 48 && c <= 57);
-}
-
-/*
- * Determines if a character is a newline
- * @param c:
- *          the character to evaluate
- * @return:
- *          a non-zero integer if the character is a newline, zero if not
- */
-int is_newline(char c) {
-    return (c == 10);
-}
-
-/*
- * Determines if a character is a carriage return
- * @param c:
- *          the character to evaluate
- * @return:
- *          a non-zero integer if the character is a carriage return, zero if not
- */
-int is_cr(char c) {
-    return (c == 13);
-}
