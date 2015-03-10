@@ -5,10 +5,8 @@
  * Author: Jake Wilson
  * Date: March 3, 2015
  */
-void read_file(HashTable *table, FILE *fp);
-int is_letter(char c);
-int is_pound(char c);
-int is_at_sign(char c);
-int is_digit(char c);
-int is_newline(char c);
-int is_cr(char c);
+
+#define TRUE  1
+#define FALSE 0
+
+#include "file_io.h"

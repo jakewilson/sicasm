@@ -6,16 +6,8 @@
  * Date:   January 12, 2015
  */
 
-#include <stdio.h>
-
 #define TABLE_SIZE 52
 #define KEY_SIZE   10
-
-#define BAD_ARGS 1
-#define BAD_FILE 2
-
-#define TRUE  1
-#define FALSE 0
 
 typedef struct Node {
     struct Node *n;
