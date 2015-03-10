@@ -5,3 +5,5 @@
  * Author: Jake Wilson
  * Date: March 8, 2015
  */
+
+char **tokenize(char *line);
