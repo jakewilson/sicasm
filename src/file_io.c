@@ -21,7 +21,7 @@
  * @param fp:
  *                  the pointer to the file to read
  */
-void read_file(HashTable *table, FILE *fp) {
+void populate_hashtable(HashTable *table, FILE *fp) {
     char c = '\0', key[10], val[12];
     int keyIdx = 0, valIdx = 0;
     while ((c = fgetc(fp)) != EOF) {
@@ -37,7 +37,6 @@ void read_file(HashTable *table, FILE *fp) {
             keyIdx = valIdx = 0;
             // add to the table only if a key and a value are entered
             if (strlen(val) != 0) { 
-                printf("inserting %s...\n", key);
                 insert(table, key, atoi(val));
             }
         }

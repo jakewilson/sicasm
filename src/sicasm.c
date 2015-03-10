@@ -26,7 +26,7 @@ int main(int argc, char *argv[]) {
         return BAD_FILE;
     }
 
-    read_file(table, fp);
+    populate_hashtable(table, fp);
     return 0;
 }
 
