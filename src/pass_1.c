@@ -34,13 +34,28 @@
 char **tokenize(char *line) {
     // allocate space for the array of strings
     char **tokens = (char **)(malloc(NUM_SEGMENTS * sizeof(char *)));
+
     // the lengths of each segment
     int lengths[4] = {LABEL_LEN, OPCODE_LEN, ARG_LEN, COMMENT_LEN};
+
     // allocate space for each individual string
     int i;
     for (i = 0; i < NUM_SEGMENTS; i++) {
-        tokens[i] = (char *)(malloc(lengths[i] * sizeof(char)));
+        // add one to the length to add the \0
+        tokens[i] = (char *)(malloc((lengths[i] + 1) * sizeof(char)));
     }
+
+    strncpy(tokens[LABEL], &line[0], LABEL_LEN);
+    tokens[LABEL][LABEL_LEN] = '\0';
+
+    strncpy(tokens[OPCODE], &line[9], OPCODE_LEN);
+    tokens[OPCODE][OPCODE_LEN] = '\0';
+
+    strncpy(tokens[ARG], &line[18], ARG_LEN);
+    tokens[ARG][ARG_LEN] = '\0';
+
+    strncpy(tokens[COMMENT], &line[31], COMMENT_LEN);
+    tokens[COMMENT][COMMENT_LEN] = '\0';
 
     return tokens;
 }

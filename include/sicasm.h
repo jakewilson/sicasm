@@ -24,3 +24,4 @@
 #define NUM_SEGMENTS 4
 
 #include "file_io.h"
+#include "pass_1.h"
