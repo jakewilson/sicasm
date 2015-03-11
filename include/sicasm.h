@@ -21,6 +21,22 @@
 #define ARG_LEN     11
 #define COMMENT_LEN 39
 
+#define SEGMENT_LENGTHS LABEL_LEN,\
+                        OPCODE_LEN,\
+                        ARG_LEN,\
+                        COMMENT_LEN
+
+/* The starting points of each segment on a line */
+#define LABEL_START    0
+#define OPCODE_START   9
+#define ARG_START     18
+#define COMMENT_START 31
+
+#define SEGMENT_STARTING_POSITIONS LABEL_START,\
+                                   OPCODE_START,\
+                                   ARG_START,\
+                                   COMMENT_START
+
 #define NUM_SEGMENTS 4
 
 #include "file_io.h"

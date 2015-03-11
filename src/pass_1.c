@@ -36,26 +36,19 @@ char **tokenize(char *line) {
     char **tokens = (char **)(malloc(NUM_SEGMENTS * sizeof(char *)));
 
     // the lengths of each segment
-    int lengths[4] = {LABEL_LEN, OPCODE_LEN, ARG_LEN, COMMENT_LEN};
+    int lengths[NUM_SEGMENTS] = {SEGMENT_LENGTHS};
+
+    int start_positions[NUM_SEGMENTS] = {SEGMENT_STARTING_POSITIONS};
 
     // allocate space for each individual string
     int i;
     for (i = 0; i < NUM_SEGMENTS; i++) {
         // add one to the length to add the \0
         tokens[i] = (char *)(malloc((lengths[i] + 1) * sizeof(char)));
+        // copy each substring of the line into the appropriate token
+        strncpy(tokens[i], &line[start_positions[i]], lengths[i]);
+        tokens[i][lengths[i]] = '\0';
     }
-
-    strncpy(tokens[LABEL], &line[0], LABEL_LEN);
-    tokens[LABEL][LABEL_LEN] = '\0';
-
-    strncpy(tokens[OPCODE], &line[9], OPCODE_LEN);
-    tokens[OPCODE][OPCODE_LEN] = '\0';
-
-    strncpy(tokens[ARG], &line[18], ARG_LEN);
-    tokens[ARG][ARG_LEN] = '\0';
-
-    strncpy(tokens[COMMENT], &line[31], COMMENT_LEN);
-    tokens[COMMENT][COMMENT_LEN] = '\0';
 
     return tokens;
 }
