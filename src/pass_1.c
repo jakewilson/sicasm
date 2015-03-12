@@ -13,6 +13,16 @@
 #include "../include/sicasm.h"
 
 /*
+ * Performs the first pass of sicasm on a file
+ *
+ * @param filepath
+ *              the path of the file to assemble
+ */
+void pass_1(char *filepath) {
+
+}
+
+/*
  * Tokenizes a line into four segments, any of which may be empty:
  *  - the LABEL segment
  *  - the OPCODE segment (this will contain a + if provided)

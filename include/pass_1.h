@@ -7,3 +7,4 @@
  */
 
 char **tokenize(char *line);
+void pass_1(char *filepath);
