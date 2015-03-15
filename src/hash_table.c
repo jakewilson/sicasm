@@ -77,15 +77,18 @@ void insert_sym(HashTable *table, const char *key, int value) {
 
         
 /*
- * Hashes the passed in key by taking the modulus of 
- * the key's first letter with TABLE_SIZE.
+ * Hashes the passed in key by taking the modulus of the sum
+ * of every letter in the key with TABLE_SIZE.
  * @param key:
  *              the key to hash
  * @return:
  *              the hash
  */
 int hash(const char *key) {
-    return key[0] % TABLE_SIZE;
+    int i, hash = 0;
+    for (i = 0; i < (int)strlen(key); i++)
+        hash += key[i];
+    return hash % TABLE_SIZE;
 }
 
 /*
