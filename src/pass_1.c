@@ -23,7 +23,17 @@
  *              a hash table already filled with valid SIC/XE operations
  */
 void pass_1(FILE *pgm, HashTable *sym_tab, HashTable *op_tab) {
-    
+    char *line = calloc(LINE_MAX_SIZE, sizeof *line);
+    // eat up all initial blank and/or comment lines
+    while (is_comment_line(line = fgets(line, LINE_MAX_SIZE, pgm)) || is_blank_line(line));
+    char **tokens = tokenize(line);
+    int loc_ctr = 0;
+    if (strcasecmp(tokens[OPCODE], "START") == 0) {
+        // TODO check if operand is a valid integer
+        //      if so, assign the value to loc_ctr
+    }
+    //printf("%s%s%s%s\n", tokens[LABEL], tokens[OPCODE], tokens[ARG], tokens[COMMENT]);
+    free_tokens(tokens);
 }
 
 /*
@@ -64,4 +74,16 @@ char **tokenize(char *line) {
     }
 
     return tokens;
+}
+
+/*
+ * Frees a two dimensional array of strings of size NUM_SEGMENTS
+ * @param tokens
+ *              the tokens array to free
+ */
+void free_tokens(char **tokens) {
+    int i;
+    for (i = 0; i < NUM_SEGMENTS; i++)
+        free(tokens[i]);
+    free(tokens);
 }

@@ -39,6 +39,8 @@
 
 #define NUM_SEGMENTS 4
 
+#define LINE_MAX_SIZE 80
+
 #include "file_io.h"
 #include "pass_1.h"
 
