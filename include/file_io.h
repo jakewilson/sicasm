@@ -11,7 +11,8 @@
 
 #include "hash_table.h"
 
-void populate_hashtable(HashTable *table, FILE *fp);
+int is_comment_line(char *line);
+int is_blank_line(char *line);
 int is_letter(char c);
 int is_pound(char c);
 int is_at_sign(char c);

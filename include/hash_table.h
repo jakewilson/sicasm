@@ -6,7 +6,7 @@
  * Date:   January 12, 2015
  */
 
-#define TABLE_SIZE 100
+#define TABLE_SIZE 150
 #define KEY_SIZE   10
 
 typedef struct Node {

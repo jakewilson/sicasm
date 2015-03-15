@@ -13,34 +13,27 @@
 #include "../include/file_io.h"
 
 /*
- * Populates a Hash Table given a file pointer to a
- * file filled with data. It adds lines with both keys
- * and values, and looks up lines with only keys.
- * @param table:
- *                  the Hash Table to fill
- * @param fp:
- *                  the pointer to the file to read
+ * Returns whether the line is a comment line (starts with a '.')
+ * @return
+ *              whether the line is a comment line
  */
-void populate_hashtable(HashTable *table, FILE *fp) {
-    char c = '\0', key[10], val[12];
-    int keyIdx = 0, valIdx = 0;
-    while ((c = fgetc(fp)) != EOF) {
-        if (is_letter(c)) {
-            key[keyIdx++] = c;
-        } else if (is_digit(c)) {
-            val[valIdx++] = c;
-        } else if (is_newline(c) || is_cr(c)) {
-            // add key and val to the table
-            // and clear the buffers
-            key[keyIdx] = '\0';
-            val[valIdx] = '\0';
-            keyIdx = valIdx = 0;
-            // add to the table only if a key and a value are entered
-            if (strlen(val) != 0) { 
-                insert(table, key, atoi(val));
-            }
-        }
-    } 
+int is_comment_line(char *line) {
+    if (strlen(line) > 0) {
+        return (line[0] == '.');
+    }
+    return 1;
+}
+
+/*
+ * Returns whether the line is a blank line (first char is a '\n')
+ * @return
+ *              whether the line is a blank line
+ */
+int is_blank_line(char *line) {
+    if (strlen(line) > 0) {
+        return (line[0] == '\n');
+    }
+    return 1;
 }
 
 /*

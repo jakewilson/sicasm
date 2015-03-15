@@ -29,6 +29,7 @@ int main(int argc, char *argv[]) {
 
     construct_op_table(op_tab);
 
+    // fill the symbol table
     pass_1(fp, sym_tab, op_tab);
 
     return 0;
