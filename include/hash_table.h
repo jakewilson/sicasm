@@ -13,12 +13,14 @@ typedef struct Node {
     struct Node *n;
     char *key;
     int value;
+    int format; // optional format field (for use by OPTAB only)
 } Node;
 
 typedef Node * HashTable;
 
 HashTable *new_hashtable();
 Node *new_node();
-void insert(HashTable *table, const char *key, int value);
+void insert(HashTable *table, const char *key, int value, int format);
+void insert_sym(HashTable *table, const char *key, int value);
 int hash(const char *key);
 Node *find(HashTable *table, const char *key);

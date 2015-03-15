@@ -6,9 +6,10 @@
  * Date:   January 19, 2015
  */
 
-#include "../include/hash_table.h"
 #include <stdlib.h>
 #include <string.h>
+
+#include "../include/hash_table.h"
 
 /*
  * Attempts to find a key in the hash table.
@@ -30,7 +31,7 @@ Node *find(HashTable *table, const char *key) {
 }
 
 /*
- * Adds a key and a value to a Hash Table. If a collision occurs,
+ * Adds a key, value and a format to a Hash Table. If a collision occurs,
  * it is added to the end of the linked list at the index of collision.
  * @param table:
  *          the Hash Table to modify
@@ -38,22 +39,42 @@ Node *find(HashTable *table, const char *key) {
  *          the key of the node
  * @param value:
  *          the value of the node
+ * @param format
+ *          the format of the node (for use by OPTAB only)
  */
-void insert(HashTable *table, const char *key, int value) {
+void insert(HashTable *table, const char *key, int value, int format) {
     int idx = hash(key);
-    if (find(table, key) == NULL) {// make sure the key is not already in the hash table
+    if (find(table, key) == NULL) { // make sure the key is not already in the hash table
         if (table[idx] == NULL) {
             table[idx] = new_node();
             strcpy(table[idx]->key, key);
             table[idx]->value = value;
+            table[idx]->format = format;
         } else {
             Node *n = new_node();
             strcpy(n->key, key);
             n->value = value;
+            n->format = format;
             n->n = table[idx];
             table[idx] = n;
         }
     }
+}
+
+/*
+ * Adds a key, value and a format of -1 to a Hash Table. If a collision occurs,
+ * it is added to the end of the linked list at the index of collision.
+ * @param table:
+ *          the Hash Table to modify
+ * @param key:
+ *          the key of the node
+ * @param value:
+ *          the value of the node
+ * @param format
+ *          the format of the node (for use by OPTAB only)
+ */
+void insert_sym(HashTable *table, const char *key, int value) {
+    insert(table, key, value, -1);
 }
 
         

@@ -17,9 +17,13 @@
  *
  * @param filepath
  *              the path of the file to assemble
+ * @param sym_tab
+ *              the symbol table to be filled upon completion of pass 1
+ * @param op_tab
+ *              a hash table already filled with valid SIC/XE operations
  */
-void pass_1(char *filepath) {
-
+void pass_1(char *filepath, HashTable *sym_tab, HashTable *op_tab) {
+    
 }
 
 /*

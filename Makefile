@@ -2,7 +2,7 @@ SRC := src
 BIN := bin
 INC := include
 BLD := build
-CC  := gcc
+CC  := gcc -Wall -W
 TST := test
 
 all: $(BIN)/sicasm

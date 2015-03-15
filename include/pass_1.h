@@ -7,4 +7,4 @@
  */
 
 char **tokenize(char *line);
-void pass_1(char *filepath);
+void pass_1(char *filepath, HashTable *sym_tab, HashTable *op_tab);
