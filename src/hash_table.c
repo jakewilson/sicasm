@@ -70,8 +70,6 @@ void insert(HashTable *table, const char *key, int value, int format) {
  *          the key of the node
  * @param value:
  *          the value of the node
- * @param format
- *          the format of the node (for use by OPTAB only)
  */
 void insert_sym(HashTable *table, const char *key, int value) {
     insert(table, key, value, -1);

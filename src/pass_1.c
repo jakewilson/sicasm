@@ -15,14 +15,14 @@
 /*
  * Performs the first pass of sicasm on a file
  *
- * @param filepath
- *              the path of the file to assemble
+ * @param pgm
+ *              the file pointer to read 
  * @param sym_tab
  *              the symbol table to be filled upon completion of pass 1
  * @param op_tab
  *              a hash table already filled with valid SIC/XE operations
  */
-void pass_1(char *filepath, HashTable *sym_tab, HashTable *op_tab) {
+void pass_1(FILE *pgm, HashTable *sym_tab, HashTable *op_tab) {
     
 }
 

@@ -41,3 +41,5 @@
 
 #include "file_io.h"
 #include "pass_1.h"
+
+void construct_op_table(HashTable *op_tab);
