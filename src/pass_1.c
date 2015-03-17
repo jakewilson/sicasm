@@ -32,12 +32,14 @@ void pass_1(FILE *pgm, HashTable *sym_tab, HashTable *op_tab) {
     int loc_ctr = 0;
 
     if (strcasecmp(tokens[OPCODE], "START") == 0) {
-        char **endptr;
-        int start = (int)strtol(tokens[ARG], endptr, 16);
-        if (*endptr == tokens[ARG]) { // invalid start address
-            // TODO write error here: invalid starting address
+        char *endptr;
+        int loc_ctr = (int)strtol(tokens[ARG], &endptr, 16);
+
+        if (endptr == tokens[ARG]) { // invalid address
+             // TODO write error here: invalid starting address
+             printf("ERROR!!!!\n");
         }
-        printf("%s %d\n", *endptr, start);
+        printf("%s %d\n", endptr, loc_ctr);
     }
 
     printf("%sx%sx%sx%sx\n", tokens[LABEL], tokens[OPCODE], tokens[ARG], tokens[COMMENT]);
@@ -72,13 +74,17 @@ char **tokenize(char *line) {
 
     // allocate space for each individual string and assign each a value
     int i;
+    
     for (i = 0; i < NUM_SEGMENTS; i++) {
         // add one to the length to make room for the '\0'
-        tokens[i] = (char *)(malloc((lengths[i] + 1) * sizeof(char)));
+        //tokens[i] = (char *)(malloc((lengths[i] + 1) * sizeof(char)));
+
+        char untrimmed[LINE_MAX_SIZE] = {0};
 
         // copy each substring of the line into the appropriate token
-        strncpy(tokens[i], &line[start_positions[i]], lengths[i]);
-        tokens[i][lengths[i]] = '\0';
+        strncpy(untrimmed, &line[start_positions[i]], lengths[i]);
+
+        tokens[i] = trim(untrimmed);
     }
 
     return tokens;

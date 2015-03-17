@@ -14,29 +14,30 @@
 #include "../include/file_io.h"
 
 /*
- * Trims a string of all leading and trailing white space. This returns a pointer
- * to the substring of the original (passed in) string, so it is important
- * to NOT overrwrite the original string with the return value, and only
- * to deallocate the original, not the returned string.
- *
+ * Trims a string and returns a newly allocated pointer to
+ * the trimmed string.
+ * NOTE: It is the callers responsibility to free the returned string.
+
  * @param str
  *              the string to string
  * @return
- *              the trimmed string as a substring of str
+ *              the newly trimmed string
  */
 char *trim(char *str) {
+    char *ret = (char *)calloc((strlen(str) + 1), sizeof *ret);
+
     while (isspace(*str)) str++;
 
-    // the string is all spaces
-    if (*str == 0)
-        return str;
+    // the string is not all spaces
+    if (*str != 0) {
+        char *end = &str[strlen(str) - 1];
+        while (end > str && isspace(*end)) end--;
+    
+        *(end + 1) = '\0';
+    }
+    strncpy(ret, str, strlen(str) + 1); // add one for the \0
 
-    char *end = &str[strlen(str) - 1];
-    while (end > str && isspace(*end)) end--;
-
-    *(end + 1) = '\0';
-
-    return str;
+    return ret;
 }
 
 /*
