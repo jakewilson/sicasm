@@ -33,13 +33,12 @@ void pass_1(FILE *pgm, HashTable *sym_tab, HashTable *op_tab) {
 
     if (strcasecmp(tokens[OPCODE], "START") == 0) {
         char *endptr;
-        int loc_ctr = (int)strtol(tokens[ARG], &endptr, 16);
+        loc_ctr = (int)strtol(tokens[ARG], &endptr, 16);
 
         if (endptr == tokens[ARG]) { // invalid address
              // TODO write error here: invalid starting address
-             printf("ERROR!!!!\n");
         }
-        printf("%s %d\n", endptr, loc_ctr);
+        // TODO write print_line()
     }
 
     printf("%sx%sx%sx%sx\n", tokens[LABEL], tokens[OPCODE], tokens[ARG], tokens[COMMENT]);
@@ -76,9 +75,6 @@ char **tokenize(char *line) {
     int i;
     
     for (i = 0; i < NUM_SEGMENTS; i++) {
-        // add one to the length to make room for the '\0'
-        //tokens[i] = (char *)(malloc((lengths[i] + 1) * sizeof(char)));
-
         char untrimmed[LINE_MAX_SIZE] = {0};
 
         // copy each substring of the line into the appropriate token
