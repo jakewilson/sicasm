@@ -24,15 +24,23 @@
  */
 void pass_1(FILE *pgm, HashTable *sym_tab, HashTable *op_tab) {
     char *line = calloc(LINE_MAX_SIZE, sizeof *line);
+
     // eat up all initial blank and/or comment lines
     while (is_comment_line(line = fgets(line, LINE_MAX_SIZE, pgm)) || is_blank_line(line));
+
     char **tokens = tokenize(line);
     int loc_ctr = 0;
+
     if (strcasecmp(tokens[OPCODE], "START") == 0) {
-        // TODO check if operand is a valid integer
-        //      if so, assign the value to loc_ctr
+        char **endptr;
+        int start = (int)strtol(tokens[ARG], endptr, 16);
+        if (*endptr == tokens[ARG]) { // invalid start address
+            // TODO write error here: invalid starting address
+        }
+        printf("%s %d\n", *endptr, start);
     }
-    //printf("%s%s%s%s\n", tokens[LABEL], tokens[OPCODE], tokens[ARG], tokens[COMMENT]);
+
+    printf("%sx%sx%sx%sx\n", tokens[LABEL], tokens[OPCODE], tokens[ARG], tokens[COMMENT]);
     free_tokens(tokens);
 }
 
@@ -87,3 +95,5 @@ void free_tokens(char **tokens) {
         free(tokens[i]);
     free(tokens);
 }
+
+

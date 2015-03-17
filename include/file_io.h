@@ -11,6 +11,7 @@
 
 #include "hash_table.h"
 
+char *trim(char *str);
 int is_comment_line(char *line);
 int is_blank_line(char *line);
 int is_letter(char c);

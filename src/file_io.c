@@ -9,8 +9,35 @@
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <ctype.h>
 
 #include "../include/file_io.h"
+
+/*
+ * Trims a string of all leading and trailing white space. This returns a pointer
+ * to the substring of the original (passed in) string, so it is important
+ * to NOT overrwrite the original string with the return value, and only
+ * to deallocate the original, not the returned string.
+ *
+ * @param str
+ *              the string to string
+ * @return
+ *              the trimmed string as a substring of str
+ */
+char *trim(char *str) {
+    while (isspace(*str)) str++;
+
+    // the string is all spaces
+    if (*str == 0)
+        return str;
+
+    char *end = &str[strlen(str) - 1];
+    while (end > str && isspace(*end)) end--;
+
+    *(end + 1) = '\0';
+
+    return str;
+}
 
 /*
  * Returns whether the line is a comment line (starts with a '.')
