@@ -13,6 +13,10 @@
 
 #include "../include/file_io.h"
 
+int is_empty(char *str) {
+    return (strcmp(str, "") == 0);
+}
+
 /*
  * Trims a string and returns a newly allocated pointer to
  * the trimmed string.
