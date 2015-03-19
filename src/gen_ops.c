@@ -1,5 +1,5 @@
 /*
- * file_io.c
+ * gen_ops.c
  * Source file for sicasm general operations.
  *
  * Author: Jake Wilson
@@ -12,6 +12,26 @@
 #include <ctype.h>
 
 #include "../include/gen_ops.h"
+
+/*
+ * Converts str to an int, and stores the value in num, if the conversion
+ * was successful.
+ * 
+ * @param str
+ *              the string to convert
+ * @param num
+ *              the pointer to store the conversion at
+ * @param base
+ *              the number base that string is in
+ * @return
+ *              TRUE if the conversion was successful, FALSE if not
+ */
+int convert_to_int(char *str, int *num, int base) {
+    char *endptr;
+    *num = (int)strtol(str, &endptr, base);
+
+    return !(endptr == str);
+}
 
 /*
  * Returns whether the string is empty (equals the empty string)
