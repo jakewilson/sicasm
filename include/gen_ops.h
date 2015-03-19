@@ -1,6 +1,6 @@
 /*
- * file_io.h
- * Header file for sicasm file and string operations.
+ * gen_ops.h
+ * Header file for sicasm general operations.
  *
  * Author: Jake Wilson
  * Date: March 9, 2015

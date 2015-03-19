@@ -41,7 +41,9 @@
 
 #define LINE_MAX_SIZE 80
 
-#include "file_io.h"
+#define WORD_LEN 3
+
+#include "gen_ops.h"
 #include "pass_1.h"
 
 void construct_op_table(HashTable *op_tab);

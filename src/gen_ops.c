@@ -1,6 +1,6 @@
 /*
  * file_io.c
- * Source file for sicasm file operations.
+ * Source file for sicasm general operations.
  *
  * Author: Jake Wilson
  * Date: March 9, 2015
@@ -11,8 +11,16 @@
 #include <stdlib.h>
 #include <ctype.h>
 
-#include "../include/file_io.h"
+#include "../include/gen_ops.h"
 
+/*
+ * Returns whether the string is empty (equals the empty string)
+ * 
+ * @param str
+ *              the string to check
+ * @return
+ *              whether the str is the empty string ("")
+ */
 int is_empty(char *str) {
     return (strcmp(str, "") == 0);
 }

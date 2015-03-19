@@ -23,6 +23,7 @@
  *              a hash table already filled with valid SIC/XE operations
  */
 void pass_1(FILE *pgm, HashTable *sym_tab, HashTable *op_tab) {
+    printf("PASS 1\n-----------------------\n");
     char *line = calloc(LINE_MAX_SIZE, sizeof *line);
 
     // eat up all initial blank and/or comment lines
@@ -41,7 +42,31 @@ void pass_1(FILE *pgm, HashTable *sym_tab, HashTable *op_tab) {
         // TODO write print_line()
     }
 
-    printf("%sx%sx%sx%sx\n", tokens[LABEL], tokens[OPCODE], tokens[ARG], tokens[COMMENT]);
+    while ((line = fgets(line, LINE_MAX_SIZE, pgm)) != NULL) {
+        if (!is_comment_line(line) && !is_blank_line(line)) {
+            tokens = tokenize(line);
+
+            if (!is_empty(tokens[LABEL])) { // if there is a label
+                if (find(sym_tab, tokens[LABEL]) == NULL) { // and the label does not already exist
+                    insert_sym(sym_tab, tokens[LABEL], loc_ctr);
+                } else {
+                    // TODO write error: duplicate symbol
+                }
+            }
+
+            printf("%-8x%s", loc_ctr, line);
+
+            Node *opcode = find(op_tab, tokens[OPCODE]);
+            if (opcode != NULL) {
+                loc_ctr += opcode->format;
+            } else if (strcmp(tokens[OPCODE], "WORD") == 0) {
+                loc_ctr += WORD_LEN;
+            } else if (strcmp(tokens[OPCODE], "RESW") == 0) {
+                
+            }
+        } // end !is_comment_line()
+    } // end while()
+
     free_tokens(tokens);
 }
 
