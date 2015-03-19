@@ -14,7 +14,7 @@
 #include "../include/gen_ops.h"
 
 /*
- * Converts str to an int, and stores the value in num, if the conversion
+ * Converts str to an int, and stores the value in num if the conversion
  * was successful.
  * 
  * @param str

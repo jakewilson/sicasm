@@ -23,7 +23,6 @@
  *              a hash table already filled with valid SIC/XE operations
  */
 void pass_1(FILE *pgm, HashTable *sym_tab, HashTable *op_tab) {
-    printf("PASS 1\n-----------------------\n");
     char *line = calloc(LINE_MAX_SIZE, sizeof *line);
 
     // eat up all initial blank and/or comment lines
@@ -33,14 +32,16 @@ void pass_1(FILE *pgm, HashTable *sym_tab, HashTable *op_tab) {
     int loc_ctr = 0;
 
     if (strcasecmp(tokens[OPCODE], "START") == 0) {
-        char *endptr;
-        loc_ctr = (int)strtol(tokens[ARG], &endptr, 16);
-
-        if (endptr == tokens[ARG]) { // invalid address
-             // TODO write error here: invalid starting address
+        int loc;
+        if (convert_to_int(tokens[ARG], &loc, 16)) {
+            loc_ctr = loc;
+        } else {
+            // TODO write error: invalid starting address
         }
         // TODO write print_line()
     }
+
+    free_tokens(tokens);
 
     while ((line = fgets(line, LINE_MAX_SIZE, pgm)) != NULL) {
         if (!is_comment_line(line) && !is_blank_line(line)) {
@@ -54,7 +55,7 @@ void pass_1(FILE *pgm, HashTable *sym_tab, HashTable *op_tab) {
                 }
             }
 
-            printf("%-8x%s", loc_ctr, line);
+            printf("%05X%5s%s", loc_ctr, "", line);
 
             Node *opcode = find(op_tab, tokens[OPCODE]);
             if (opcode != NULL) {
@@ -62,12 +63,26 @@ void pass_1(FILE *pgm, HashTable *sym_tab, HashTable *op_tab) {
             } else if (strcmp(tokens[OPCODE], "WORD") == 0) {
                 loc_ctr += WORD_LEN;
             } else if (strcmp(tokens[OPCODE], "RESW") == 0) {
+                int words = -1;
+
+                if (convert_to_int(tokens[ARG], &words, 10)) {
+                    if (words > - 1) {
+                        loc_ctr += (WORD_LEN * words);
+                    } else {
+                        // TODO write error: num words must be positive
+                    }
+                } else {
+                    // TODO write error: negative operand field not allowed for this operation
+                }
+            } else if (strcmp(tokens[OPCODE], "BYTE") == 0) {
                 
             }
+
+            free_tokens(tokens);
+
         } // end !is_comment_line()
     } // end while()
 
-    free_tokens(tokens);
 }
 
 /*
