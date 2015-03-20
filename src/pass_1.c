@@ -74,8 +74,9 @@ void pass_1(FILE *pgm, HashTable *sym_tab, HashTable *op_tab) {
                 } else {
                     // TODO write error: negative operand field not allowed for this operation
                 }
+
             } else if (strcmp(tokens[OPCODE], "BYTE") == 0) {
-                
+                loc_ctr += get_bytes(tokens[ARG]);
             }
 
             free_tokens(tokens);
@@ -84,6 +85,56 @@ void pass_1(FILE *pgm, HashTable *sym_tab, HashTable *op_tab) {
     } // end while()
 
 }
+
+
+/*
+ * Gets the number of bytes of a byte literal string, for example:
+ * X'FEBA' -> 2 bytes
+ * C'EOF'  -> 3 bytes
+ * This function will also write the appropriate error to an error file TODO
+ *
+ * @param str
+ *              the string to check 
+ * @return
+ *              the number of bytes of string, 0 if invalid
+ */
+int get_bytes(char *str) {
+    char *first = str;
+    int num_bytes = 0;
+
+    if (first[1] == '\'' && first[strlen(first) - 1] == '\'') {
+        if (*first == 'X') {
+            // ensure amount of characters in between the quotes is even
+            first += 2; // skip two characters (the X and the ')
+            int num_chars = 0;
+    
+            while (*first++ !='\'') num_chars++;
+    
+            if (num_chars % 2 == 0) {
+                printf("X is erfect!\n");
+                num_bytes = (num_chars / 2);
+            } else {
+                // TODO write error: Odd number of X bytes found in operand field
+            }
+
+        } else if (*first == 'C'){
+            first += 2; // skip two characters (the X and the ')
+            int num_chars = 0;
+    
+            while (*first++ !='\'') num_chars++;
+            
+            num_bytes = num_chars;
+        } else {
+            // TODO write error: expected 'X' or 'C' before open quote
+        }
+
+    } else {
+        // TODO write error: no quotes found in operand field
+    }
+
+    return num_bytes;
+}
+
 
 /*
  * Tokenizes a line into four segments, any of which may be empty:
@@ -125,6 +176,7 @@ char **tokenize(char *line) {
 
     return tokens;
 }
+
 
 /*
  * Frees a two dimensional array of strings of size NUM_SEGMENTS
