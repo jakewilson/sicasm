@@ -24,9 +24,11 @@
  */
 void pass_1(FILE *pgm, HashTable *sym_tab, HashTable *op_tab) {
     char *line = calloc(LINE_MAX_SIZE, sizeof *line);
+    int line_num = 0;
 
     // eat up all initial blank and/or comment lines
-    while (is_comment_line(line = fgets(line, LINE_MAX_SIZE, pgm)) || is_blank_line(line));
+    while (is_comment_line(line = fgets(line, LINE_MAX_SIZE, pgm)) || is_blank_line(line))
+        print_line(line_num++, -1, line);
 
     char **tokens = tokenize(line);
     int loc_ctr = 0;
@@ -34,14 +36,13 @@ void pass_1(FILE *pgm, HashTable *sym_tab, HashTable *op_tab) {
     if (strcasecmp(tokens[OPCODE], "START") == 0) {
         int loc;
         if (convert_to_pos_int(tokens[ARG], &loc, 16)) {
-            // TODO make sure this isn't positive
             loc_ctr = loc;
         } else {
             // TODO write error: operand must be a positive number
         }
 
         add_to_sym_tab(sym_tab, tokens[LABEL], loc_ctr);
-        // TODO write print_line()
+        print_line(line_num++, loc_ctr, line);
     }
 
     free_tokens(tokens);
@@ -52,14 +53,36 @@ void pass_1(FILE *pgm, HashTable *sym_tab, HashTable *op_tab) {
             tokens = tokenize(line);
 
             add_to_sym_tab(sym_tab, tokens[LABEL], loc_ctr);
-            printf("%05X%5s%s", loc_ctr, "", line);
+            print_line(line_num++, loc_ctr, line);
 
             increment_loc_ctr(op_tab, &loc_ctr, tokens);
 
             free_tokens(tokens);
-        } // end !is_comment_line()
+        } else { // if it is a blank or comment line
+            print_line(line_num++, -1, line);
+        }
     } // end while()
 
+}
+
+
+/*
+ * Prints a line to the specified stream
+ * If the loc_ctr is less than 0, it is ommitted
+ *
+ * @param line_num
+ *              the line number
+ * @param loc_ctr
+ *              the location counter
+ * @param line
+ *              the line to print
+ */
+void print_line(int line_num, int loc_ctr, char *line) {
+    if (loc_ctr >= 0) {
+        printf("%03d- %05X%5s%s", line_num, loc_ctr, "", line);
+    } else {
+        printf("%03d- %5s%5s%s", line_num, "", "", line);
+    }
 }
 
 
@@ -121,8 +144,8 @@ void add_to_sym_tab(HashTable *sym_tab, char *symbol, int loc_ctr) {
 
 /*
  * Gets the number of bytes of a byte literal string, for example:
- * X'FEBA' -> 2 bytes
- * C'EOF'  -> 3 bytes
+ *   X'FEBA' -> 2 bytes
+ *   C'EOF'  -> 3 bytes
  * This function will also write the appropriate error to an error file TODO
  *
  * @param str
@@ -148,7 +171,7 @@ int get_bytes(char *str) {
             }
 
         } else if (*str == 'C'){
-            str += 2; // skip two characters (the X and the ')
+            str += 2; // skip two characters (the C and the ')
             int num_chars = 0;
     
             while (*str++ !='\'') num_chars++;

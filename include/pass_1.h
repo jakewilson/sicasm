@@ -6,6 +6,7 @@
  * Date: March 8, 2015
  */
 
+void print_line(int line_num, int loc_ctr, char *line);
 void add_to_sym_tab(HashTable *sym_tab, char *symbol, int loc_ctr);
 void increment_loc_ctr(HashTable *op_tab, int *loc_ctr, char **tokens);
 int get_bytes(char *str);
