@@ -32,6 +32,18 @@ Node *find(HashTable *table, const char *key) {
 }
 
 /*
+ * Prints a hash table, without printing the format
+ * @param table
+ *              the table to print
+ */
+void print(HashTable *table) {
+    int i;
+    for (i = 0; i < TABLE_SIZE; i++)
+        if (table[i] != NULL)
+            printf("%d: %s %X\n", i, table[i]->key, table[i]->value);
+}
+
+/*
  * Adds a key, value and a format to a Hash Table. If a collision occurs,
  * it is added to the end of the linked list at the index of collision.
  * @param table:

@@ -24,3 +24,4 @@ void insert(HashTable *table, const char *key, int value, int format);
 void insert_sym(HashTable *table, const char *key, int value);
 int hash(const char *key);
 Node *find(HashTable *table, const char *key);
+void print(HashTable *table);

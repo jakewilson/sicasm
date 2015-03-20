@@ -6,6 +6,7 @@
  * Date: March 8, 2015
  */
 
+void add_to_sym_tab(HashTable *sym_tab, char *symbol, int loc_ctr);
 int get_bytes(char *str);
 int increment_loc(int *loc_ctr, HashTable *op_tab, char *op);
 char **tokenize(char *line);

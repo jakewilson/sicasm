@@ -32,6 +32,8 @@ int main(int argc, char *argv[]) {
     // fill the symbol table
     pass_1(fp, sym_tab, op_tab);
 
+    print(sym_tab);
+
     free(sym_tab);
     free(op_tab);
 

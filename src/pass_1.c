@@ -16,7 +16,7 @@
  * Performs the first pass of sicasm on a file
  *
  * @param pgm
- *              the file pointer to read 
+ *              a pointer to the source file to assemble
  * @param sym_tab
  *              the symbol table to be filled upon completion of pass 1
  * @param op_tab
@@ -48,15 +48,12 @@ void pass_1(FILE *pgm, HashTable *sym_tab, HashTable *op_tab) {
             tokens = tokenize(line);
 
             if (!is_empty(tokens[LABEL])) { // if there is a label
-                if (find(sym_tab, tokens[LABEL]) == NULL) { // and the label does not already exist
-                    insert_sym(sym_tab, tokens[LABEL], loc_ctr);
-                } else {
-                    // TODO write error: duplicate symbol
-                }
+                add_to_sym_tab(sym_tab, tokens[LABEL], loc_ctr);
             }
 
             printf("%05X%5s%s", loc_ctr, "", line);
 
+            // TODO create function increment_loc_ctr()
             Node *opcode = find(op_tab, tokens[OPCODE]);
             if (opcode != NULL) {
                 loc_ctr += opcode->format;
@@ -86,6 +83,25 @@ void pass_1(FILE *pgm, HashTable *sym_tab, HashTable *op_tab) {
 
 }
 
+
+/*
+ * Adds symbol to the symbol table if it isn't already there
+ * If it is, the appropriate error will be written TODO
+ *
+ * @param sym_tab
+ *              the symbol table
+ * @param symbol
+ *              the symbol to insert
+ * @param loc_ctr
+ *              the loc_ctr to insert for symbol
+ */
+void add_to_sym_tab(HashTable *sym_tab, char *symbol, int loc_ctr) {
+    if (find(sym_tab, symbol) == NULL) { // and the label does not already exist
+        insert_sym(sym_tab, symbol, loc_ctr);
+    } else {
+        // TODO write error: duplicate symbol
+    }
+}
 
 /*
  * Gets the number of bytes of a byte literal string, for example:
