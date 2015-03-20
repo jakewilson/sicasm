@@ -34,6 +34,8 @@ int main(int argc, char *argv[]) {
 
     print(sym_tab);
 
+    fclose(fp);
+
     free(sym_tab);
     free(op_tab);
 

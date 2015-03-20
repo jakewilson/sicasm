@@ -33,11 +33,11 @@ void pass_1(FILE *pgm, HashTable *sym_tab, HashTable *op_tab) {
 
     if (strcasecmp(tokens[OPCODE], "START") == 0) {
         int loc;
-        if (convert_to_int(tokens[ARG], &loc, 16)) {
+        if (convert_to_pos_int(tokens[ARG], &loc, 16)) {
             // TODO make sure this isn't positive
             loc_ctr = loc;
         } else {
-            // TODO write error: invalid starting address
+            // TODO write error: operand must be a positive number
         }
 
         add_to_sym_tab(sym_tab, tokens[LABEL], loc_ctr);
@@ -85,14 +85,10 @@ void increment_loc_ctr(HashTable *op_tab, int *loc_ctr, char **tokens) {
     } else if (strcmp(tokens[OPCODE], "RESW") == 0) {
         int words = -1;
 
-        if (convert_to_int(tokens[ARG], &words, 10)) {
-            if (words > - 1) {
-                *loc_ctr += (WORD_LEN * words);
-            } else {
-                // TODO write error: num words must be positive
-            }
+        if (convert_to_pos_int(tokens[ARG], &words, 10)) {
+            *loc_ctr += (WORD_LEN * words);
         } else {
-            // TODO write error: negative operand field not allowed for this operation
+            // TODO write error: operand must be a positive number
         }
 
     } else if (strcmp(tokens[OPCODE], "BYTE") == 0) {

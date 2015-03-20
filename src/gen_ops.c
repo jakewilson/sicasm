@@ -14,6 +14,23 @@
 #include "../include/gen_ops.h"
 
 /*
+ * Same as convert_to_int, but returns false if the converted number
+ * is negative.
+
+ * @param str
+ *              the string to convert
+ * @param num
+ *              the pointer to store the conversion at
+ * @param base
+ *              the number base that string is in
+ * @return
+ *              TRUE if the conversion was successful AND num is positive, FALSE if neither
+ */
+int convert_to_pos_int(char *str, int *num, int base) {
+    return convert_to_int(str, num, base) && *(num) >= 0;
+}
+
+/*
  * Converts str to an int, and stores the value in num if the conversion
  * was successful.
  * 

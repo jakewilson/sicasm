@@ -11,6 +11,7 @@
 
 #include "hash_table.h"
 
+int convert_to_pos_int(char *str, int *num, int base);
 int convert_to_int(char *str, int *num, int base);
 char *trim(char *str);
 int is_empty(char *str);
