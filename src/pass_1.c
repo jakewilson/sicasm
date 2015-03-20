@@ -38,6 +38,8 @@ void pass_1(FILE *pgm, HashTable *sym_tab, HashTable *op_tab) {
         } else {
             // TODO write error: invalid starting address
         }
+
+        add_to_sym_tab(sym_tab, tokens[LABEL], loc_ctr);
         // TODO write print_line()
     }
 
@@ -47,9 +49,7 @@ void pass_1(FILE *pgm, HashTable *sym_tab, HashTable *op_tab) {
         if (!is_comment_line(line) && !is_blank_line(line)) {
             tokens = tokenize(line);
 
-            if (!is_empty(tokens[LABEL])) { // if there is a label
-                add_to_sym_tab(sym_tab, tokens[LABEL], loc_ctr);
-            }
+            add_to_sym_tab(sym_tab, tokens[LABEL], loc_ctr);
 
             printf("%05X%5s%s", loc_ctr, "", line);
 
@@ -96,10 +96,13 @@ void pass_1(FILE *pgm, HashTable *sym_tab, HashTable *op_tab) {
  *              the loc_ctr to insert for symbol
  */
 void add_to_sym_tab(HashTable *sym_tab, char *symbol, int loc_ctr) {
-    if (find(sym_tab, symbol) == NULL) { // and the label does not already exist
-        insert_sym(sym_tab, symbol, loc_ctr);
-    } else {
-        // TODO write error: duplicate symbol
+    if (!is_empty(symbol)) {
+        if (find(sym_tab, symbol) == NULL) { // and the label does not already exist
+            insert_sym(sym_tab, symbol, loc_ctr);
+        printf("adding %s...\n", symbol);
+        } else {
+            // TODO write error: duplicate symbol
+        }
     }
 }
 

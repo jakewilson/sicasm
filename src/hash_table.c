@@ -38,9 +38,13 @@ Node *find(HashTable *table, const char *key) {
  */
 void print(HashTable *table) {
     int i;
-    for (i = 0; i < TABLE_SIZE; i++)
-        if (table[i] != NULL)
-            printf("%d: %s %X\n", i, table[i]->key, table[i]->value);
+    for (i = 0; i < TABLE_SIZE; i++) {
+        Node *n = table[i];
+        while (n != NULL) {
+            printf("%d: %s %X\n", i, n->key, n->value);
+            n = n->n;
+        }
+    }
 }
 
 /*
