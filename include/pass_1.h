@@ -7,6 +7,7 @@
  */
 
 void add_to_sym_tab(HashTable *sym_tab, char *symbol, int loc_ctr);
+void increment_loc_ctr(HashTable *op_tab, int *loc_ctr, char **tokens);
 int get_bytes(char *str);
 int increment_loc(int *loc_ctr, HashTable *op_tab, char *op);
 char **tokenize(char *line);

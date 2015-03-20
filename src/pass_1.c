@@ -34,6 +34,7 @@ void pass_1(FILE *pgm, HashTable *sym_tab, HashTable *op_tab) {
     if (strcasecmp(tokens[OPCODE], "START") == 0) {
         int loc;
         if (convert_to_int(tokens[ARG], &loc, 16)) {
+            // TODO make sure this isn't positive
             loc_ctr = loc;
         } else {
             // TODO write error: invalid starting address
@@ -45,41 +46,58 @@ void pass_1(FILE *pgm, HashTable *sym_tab, HashTable *op_tab) {
 
     free_tokens(tokens);
 
+    // parse the file line by line
     while ((line = fgets(line, LINE_MAX_SIZE, pgm)) != NULL) {
         if (!is_comment_line(line) && !is_blank_line(line)) {
             tokens = tokenize(line);
 
             add_to_sym_tab(sym_tab, tokens[LABEL], loc_ctr);
-
             printf("%05X%5s%s", loc_ctr, "", line);
 
-            // TODO create function increment_loc_ctr()
-            Node *opcode = find(op_tab, tokens[OPCODE]);
-            if (opcode != NULL) {
-                loc_ctr += opcode->format;
-            } else if (strcmp(tokens[OPCODE], "WORD") == 0) {
-                loc_ctr += WORD_LEN;
-            } else if (strcmp(tokens[OPCODE], "RESW") == 0) {
-                int words = -1;
-
-                if (convert_to_int(tokens[ARG], &words, 10)) {
-                    if (words > - 1) {
-                        loc_ctr += (WORD_LEN * words);
-                    } else {
-                        // TODO write error: num words must be positive
-                    }
-                } else {
-                    // TODO write error: negative operand field not allowed for this operation
-                }
-
-            } else if (strcmp(tokens[OPCODE], "BYTE") == 0) {
-                loc_ctr += get_bytes(tokens[ARG]);
-            }
+            increment_loc_ctr(op_tab, &loc_ctr, tokens);
 
             free_tokens(tokens);
-
         } // end !is_comment_line()
     } // end while()
+
+}
+
+
+/*
+ * Looks up the specified opcode and increments loc_ctr by the format of opcode.
+ * If the opcode is not found, the opcode is checked to see if it's an assembler directive.
+ * If so, appropriate actions are taken and loc_ctr is incremented by the appropriate amount.
+ * TODO all errors are written when appropriate
+ *
+ * @param op_tab
+ *              the op table
+ * @param loc_ctr
+ *              the location counter
+ * @param tokens
+ *              the line tokens
+ */
+void increment_loc_ctr(HashTable *op_tab, int *loc_ctr, char **tokens) {
+    Node *opcode = find(op_tab, tokens[OPCODE]);
+    if (opcode != NULL) {
+        *loc_ctr += opcode->format;
+    } else if (strcmp(tokens[OPCODE], "WORD") == 0) {
+        *loc_ctr += WORD_LEN;
+    } else if (strcmp(tokens[OPCODE], "RESW") == 0) {
+        int words = -1;
+
+        if (convert_to_int(tokens[ARG], &words, 10)) {
+            if (words > - 1) {
+                *loc_ctr += (WORD_LEN * words);
+            } else {
+                // TODO write error: num words must be positive
+            }
+        } else {
+            // TODO write error: negative operand field not allowed for this operation
+        }
+
+    } else if (strcmp(tokens[OPCODE], "BYTE") == 0) {
+        *loc_ctr += get_bytes(tokens[ARG]);
+    }
 
 }
 
@@ -99,7 +117,6 @@ void add_to_sym_tab(HashTable *sym_tab, char *symbol, int loc_ctr) {
     if (!is_empty(symbol)) {
         if (find(sym_tab, symbol) == NULL) { // and the label does not already exist
             insert_sym(sym_tab, symbol, loc_ctr);
-        printf("adding %s...\n", symbol);
         } else {
             // TODO write error: duplicate symbol
         }
@@ -118,29 +135,27 @@ void add_to_sym_tab(HashTable *sym_tab, char *symbol, int loc_ctr) {
  *              the number of bytes of string, 0 if invalid
  */
 int get_bytes(char *str) {
-    char *first = str;
     int num_bytes = 0;
 
-    if (first[1] == '\'' && first[strlen(first) - 1] == '\'') {
-        if (*first == 'X') {
+    if (str[1] == '\'' && str[strlen(str) - 1] == '\'') {
+        if (*str == 'X') {
             // ensure amount of characters in between the quotes is even
-            first += 2; // skip two characters (the X and the ')
+            str += 2; // skip two characters (the X and the ')
             int num_chars = 0;
     
-            while (*first++ !='\'') num_chars++;
+            while (*str++ !='\'') num_chars++;
     
             if (num_chars % 2 == 0) {
-                printf("X is erfect!\n");
                 num_bytes = (num_chars / 2);
             } else {
                 // TODO write error: Odd number of X bytes found in operand field
             }
 
-        } else if (*first == 'C'){
-            first += 2; // skip two characters (the X and the ')
+        } else if (*str == 'C'){
+            str += 2; // skip two characters (the X and the ')
             int num_chars = 0;
     
-            while (*first++ !='\'') num_chars++;
+            while (*str++ !='\'') num_chars++;
             
             num_bytes = num_chars;
         } else {
