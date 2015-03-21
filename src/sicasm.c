@@ -32,6 +32,7 @@ int main(int argc, char *argv[]) {
     // fill the symbol table
     pass_1(fp, sym_tab, op_tab);
 
+    printf("\nSymbol Table\n-----------\n");
     print(sym_tab);
 
     fclose(fp);

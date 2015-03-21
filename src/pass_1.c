@@ -24,7 +24,7 @@
  */
 void pass_1(FILE *pgm, HashTable *sym_tab, HashTable *op_tab) {
     char *line = calloc(LINE_MAX_SIZE, sizeof *line);
-    int line_num = 0;
+    int line_num = 1;
 
     // eat up all initial blank and/or comment lines
     while (is_comment_line(line = fgets(line, LINE_MAX_SIZE, pgm)) || is_blank_line(line))
@@ -51,7 +51,7 @@ void pass_1(FILE *pgm, HashTable *sym_tab, HashTable *op_tab) {
     while ((line = fgets(line, LINE_MAX_SIZE, pgm)) != NULL) {
         if (!is_comment_line(line) && !is_blank_line(line)) {
             tokens = tokenize(line);
-
+            // TODO check if tokens[ARG] is empty and throw error if so
             add_to_sym_tab(sym_tab, tokens[LABEL], loc_ctr);
             print_line(line_num++, loc_ctr, line);
 
@@ -116,6 +116,19 @@ void increment_loc_ctr(HashTable *op_tab, int *loc_ctr, char **tokens) {
 
     } else if (strcmp(tokens[OPCODE], "BYTE") == 0) {
         *loc_ctr += get_bytes(tokens[ARG]);
+    } else if (strcmp(tokens[OPCODE], "RESB") == 0) {
+        int words = -1;
+
+        if (convert_to_pos_int(tokens[ARG], &words, 10)) {
+            *loc_ctr += words;
+        } else {
+            // TODO write error: operand must be a positive number
+        }
+        
+    } else if (strcmp(tokens[OPCODE], "BASE") == 0) {
+
+    } else if (strcmp(tokens[OPCODE], "LTORG") == 0) {
+
     }
 
 }
