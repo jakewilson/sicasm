@@ -7,9 +7,9 @@ TST := test
 
 all: $(BIN)/sicasm
 
-$(BIN)/sicasm: $(BLD)/sicasm.o $(BLD)/hash_table.o $(BLD)/pass_1.o $(BLD)/gen_ops.o
+$(BIN)/sicasm: $(BLD)/sicasm.o $(BLD)/hash_table.o $(BLD)/pass_1.o $(BLD)/gen_ops.o $(BLD)/stack.o
 	mkdir -p $(BIN)
-	$(CC) $(BLD)/sicasm.o $(BLD)/hash_table.o $(BLD)/gen_ops.o $(BLD)/pass_1.o -o $(BIN)/sicasm
+	$(CC) $(BLD)/sicasm.o $(BLD)/hash_table.o $(BLD)/gen_ops.o $(BLD)/pass_1.o $(BLD)/stack.o -o $(BIN)/sicasm
 
 $(BLD)/sicasm.o: $(SRC)/sicasm.c $(INC)/sicasm.h
 	mkdir -p $(BLD)
@@ -23,6 +23,9 @@ $(BLD)/pass_1.o: $(SRC)/pass_1.c $(INC)/pass_1.h
 
 $(BLD)/gen_ops.o: $(SRC)/gen_ops.c $(INC)/gen_ops.h
 	$(CC) -c $(SRC)/gen_ops.c -o $(BLD)/gen_ops.o 
+
+$(BLD)/stack.o: $(SRC)/stack.c $(INC)/stack.h
+	$(CC) -c $(SRC)/stack.c -o $(BLD)/stack.o 
 
 test: $(BIN)/sicasm $(TST)/test.o
 	mkdir -p $(TST)/$(BIN)
