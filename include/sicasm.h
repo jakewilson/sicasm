@@ -43,6 +43,8 @@
 
 #define WORD_LEN 3
 
+#include "hash_table.h"
+#include "stack.h"
 #include "gen_ops.h"
 #include "pass_1.h"
 

@@ -29,7 +29,7 @@ $(BLD)/stack.o: $(SRC)/stack.c $(INC)/stack.h
 
 test: $(BIN)/sicasm $(TST)/test.o
 	mkdir -p $(TST)/$(BIN)
-	$(CC) $(TST)/test.o $(BLD)/hash_table.o $(BLD)/gen_ops.o $(BLD)/pass_1.o -o $(TST)/$(BIN)/test
+	$(CC) $(TST)/test.o $(BLD)/hash_table.o $(BLD)/gen_ops.o $(BLD)/pass_1.o $(BLD)/stack.o -o $(TST)/$(BIN)/test
 
 $(TST)/test.o: $(TST)/test.c
 	$(CC) -c $(TST)/test.c -o $(TST)/test.o
