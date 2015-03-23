@@ -22,10 +22,24 @@ int empty(Stack *s) {
     return (s->top == -1);
 }
 
+
+/*
+ * Returns whether the stack is empty or not
+ * @param s
+ *              the stack in question
+ * @return
+ *              TRUE if the stack is empty, FALSE if not
+ */
+int full(Stack *s) {
+    return (s->top == s->size);
+}
+
 /*
  * Pops a string from the stack
  * @param s
  *              the stack to pop from
+ * @return
+ *              the string previously on the top of the stack
  */
 char *pop(Stack *s) {
     if (!empty(s))
@@ -43,10 +57,15 @@ char *pop(Stack *s) {
  *              the string to push
  */
 void push(Stack *s, char *str) {
-    if (s->top < s->size)
+    if (!full(s))
         s->stack[++(s->top)] = str;
 }
 
+/*
+ * Returns a new stack with size STACK_SIZE
+ * @return
+ *              a new stack with size STACK_SIZE
+ */
 Stack *new_stack() {
     Stack *s = memset(malloc(sizeof *s), '\0', sizeof *s);
     s->top = -1;

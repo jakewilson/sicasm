@@ -17,3 +17,4 @@ Stack *new_stack();
 char *pop(Stack *s);
 void push(Stack *s, char *str);
 int empty(Stack *s);
+int full(Stack *s);
