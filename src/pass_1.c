@@ -84,7 +84,10 @@ void pass_1(FILE *pgm, HashTable *sym_tab, HashTable *op_tab) {
 void add_literals(Stack *lit_stack, HashTable *sym_tab, int *loc_ctr) {
     while (!empty(lit_stack)) {
         char *lit = pop(lit_stack);
-        add_to_sym_tab(sym_tab, lit, *loc_ctr);
+        // we do a find here because we don't want to generate an error if a
+        // duplicate literal is found
+        if (find(sym_tab, lit) == NULL)
+            add_to_sym_tab(sym_tab, lit, *loc_ctr);
         *loc_ctr += get_bytes(&lit[1]);
         free(lit);
     }
@@ -180,6 +183,7 @@ void add_to_sym_tab(HashTable *sym_tab, char *symbol, int loc_ctr) {
             insert_sym(sym_tab, symbol, loc_ctr);
         } else {
             // TODO write error: duplicate symbol
+            printf("ERROR: duplicate symbol %s\n", symbol);
         }
     }
 }

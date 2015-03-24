@@ -45,4 +45,3 @@
 #include "gen_ops.h"
 #include "pass_1.h"
 
-void construct_op_table(HashTable *op_tab);
