@@ -86,6 +86,7 @@ void add_literals(Stack *lit_stack, HashTable *sym_tab, int *loc_ctr) {
         char *lit = pop(lit_stack);
         add_to_sym_tab(sym_tab, lit, *loc_ctr);
         *loc_ctr += get_bytes(&lit[1]);
+        free(lit);
     }
 }
 
