@@ -9,6 +9,10 @@
 #define BAD_ARGS 1
 #define BAD_FILE 2
 
+#define TRUE  1
+#define FALSE 0
+
+int is_literal(char *str);
 int convert_to_pos_int(char *str, int *num, int base);
 int convert_to_int(char *str, int *num, int base);
 char *trim(char *str);

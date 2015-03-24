@@ -6,9 +6,6 @@
  * Date: March 3, 2015
  */
 
-#define TRUE  1
-#define FALSE 0
-
 /* The segments of a sicasm line */
 #define LABEL   0
 #define OPCODE  1

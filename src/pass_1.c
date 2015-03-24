@@ -33,6 +33,8 @@ void pass_1(FILE *pgm, HashTable *sym_tab, HashTable *op_tab) {
     char **tokens = tokenize(line);
     int loc_ctr = 0;
 
+    Stack *literal_stack = new_stack(); // keep track of all literals with a stack
+
     if (strcasecmp(tokens[OPCODE], "START") == 0) {
         int loc;
         if (convert_to_pos_int(tokens[ARG], &loc, 16)) {
@@ -53,9 +55,13 @@ void pass_1(FILE *pgm, HashTable *sym_tab, HashTable *op_tab) {
             tokens = tokenize(line);
             // TODO check if tokens[ARG] is empty and throw error if so
             add_to_sym_tab(sym_tab, tokens[LABEL], loc_ctr);
+
+            if (is_literal(tokens[ARG]))
+                push(literal_stack, tokens[ARG]);
+
             print_line(line_num++, loc_ctr, line);
 
-            increment_loc_ctr(op_tab, &loc_ctr, tokens);
+            increment_loc_ctr(op_tab, &loc_ctr, tokens, sym_tab, literal_stack);
 
             free_tokens(tokens);
         } else { // if it is a blank or comment line
@@ -63,6 +69,24 @@ void pass_1(FILE *pgm, HashTable *sym_tab, HashTable *op_tab) {
         }
     } // end while()
 
+}
+
+
+/*
+ * Removes all literals from the stack and adds them to the symbol table
+ * @param lit_stack
+ *              the literal stack
+ * @param sym_tab
+ *              the symbol table
+ * @param loc_ctr
+ *              the location counter
+ */
+void add_literals(Stack *lit_stack, HashTable *sym_tab, int *loc_ctr) {
+    while (!empty(lit_stack)) {
+        char *lit = pop(lit_stack);
+        add_to_sym_tab(sym_tab, lit, *loc_ctr);
+        *loc_ctr += get_bytes(&lit[1]);
+    }
 }
 
 
@@ -98,8 +122,12 @@ void print_line(int line_num, int loc_ctr, char *line) {
  *              the location counter
  * @param tokens
  *              the line tokens
+ * @param sym_tab
+ *              the symbol table
+ * @param lit_stack
+ *              the literal stack
  */
-void increment_loc_ctr(HashTable *op_tab, int *loc_ctr, char **tokens) {
+void increment_loc_ctr(HashTable *op_tab, int *loc_ctr, char **tokens, HashTable *sym_tab, Stack *lit_stack) {
     Node *opcode = find(op_tab, tokens[OPCODE]);
     if (opcode != NULL) {
         *loc_ctr += opcode->format;
@@ -128,7 +156,7 @@ void increment_loc_ctr(HashTable *op_tab, int *loc_ctr, char **tokens) {
     } else if (strcmp(tokens[OPCODE], "BASE") == 0) {
 
     } else if (strcmp(tokens[OPCODE], "LTORG") == 0) {
-
+        add_literals(lit_stack, sym_tab, loc_ctr);
     }
 
 }

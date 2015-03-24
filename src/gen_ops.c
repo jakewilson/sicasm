@@ -14,6 +14,18 @@
 #include "../include/gen_ops.h"
 
 /*
+ * Determines whether a string is a literal or not (starts with '=')
+ * @return
+ *              TRUE if str is a literal, FALSE if not
+ */
+int is_literal(char *str) {
+    if (!is_empty(str))
+        return (str[0] == '=');
+
+    return FALSE;
+}
+
+/*
  * Same as convert_to_int, but returns false if the converted number
  * is negative.
 
@@ -98,7 +110,7 @@ int is_comment_line(char *line) {
     if (strlen(line) > 0) {
         return (line[0] == '.');
     }
-    return 1;
+    return TRUE;
 }
 
 /*
@@ -110,7 +122,7 @@ int is_blank_line(char *line) {
     if (strlen(line) > 0) {
         return (line[0] == '\n');
     }
-    return 1;
+    return TRUE;
 }
 
 /*
