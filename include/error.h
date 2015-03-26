@@ -13,6 +13,7 @@ typedef struct Error {
 Error sic_error;
 
 /* Error codes */
+#define NO_ERROR         0
 #define NEGATIVE_OPERAND 1
 #define EMPTY_ARG        2
 #define DUPLICATE_SYMBOL 3
@@ -21,3 +22,4 @@ Error sic_error;
 #define INVALID_QUOTES   6
 
 void write_error();
+void set_error(int line, int code);

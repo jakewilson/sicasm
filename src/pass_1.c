@@ -40,8 +40,7 @@ void pass_1(FILE *pgm, HashTable *sym_tab, HashTable *op_tab) {
         if (convert_to_pos_int(tokens[ARG], &loc, 16)) {
             loc_ctr = loc;
         } else {
-            sic_error.code = NEGATIVE_OPERAND;
-            sic_error.line = line_num;
+            set_error(line_num, NEGATIVE_OPERAND);
         }
 
         add_to_sym_tab(sym_tab, tokens[LABEL], loc_ctr);
