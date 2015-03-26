@@ -161,6 +161,8 @@ void increment_loc_ctr(HashTable *op_tab, int *loc_ctr, char **tokens, HashTable
 
     } else if (strcmp(tokens[OPCODE], "LTORG") == 0) {
         add_literals(lit_stack, sym_tab, loc_ctr);
+    } else if (strcmp(tokens[OPCODE], "END") == 0) {
+        add_literals(lit_stack, sym_tab, loc_ctr);
     }
 
 }
@@ -286,6 +288,7 @@ void free_tokens(char **tokens) {
     int i;
     for (i = 0; i < NUM_SEGMENTS; i++)
         free(tokens[i]);
+
     free(tokens);
 }
 
