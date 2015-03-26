@@ -1,6 +1,5 @@
 /*
- * main.c
- * Main file for Project 1.
+ * Main file for sicasm.
  *
  * Author: Jake Wilson
  * Date:   January 12, 2015

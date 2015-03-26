@@ -40,11 +40,13 @@ void pass_1(FILE *pgm, HashTable *sym_tab, HashTable *op_tab) {
         if (convert_to_pos_int(tokens[ARG], &loc, 16)) {
             loc_ctr = loc;
         } else {
-            // TODO write error: operand must be a positive number
+            sic_error.code = NEGATIVE_OPERAND;
+            sic_error.line = line_num;
         }
 
         add_to_sym_tab(sym_tab, tokens[LABEL], loc_ctr);
         print_line(line_num++, loc_ctr, line);
+        write_error();
     }
 
     free_tokens(tokens);

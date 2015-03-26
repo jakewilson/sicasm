@@ -40,6 +40,7 @@
 
 #define WORD_LEN 3
 
+#include "error.h"
 #include "hash_table.h"
 #include "stack.h"
 #include "gen_ops.h"
