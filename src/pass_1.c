@@ -67,7 +67,7 @@ void pass_1(FILE *pgm, HashTable *sym_tab, HashTable *op_tab) {
             print_line(line_num++, loc_ctr, line);
             write_error(line_num - 1);
 
-            increment_loc_ctr(op_tab, &loc_ctr, tokens, sym_tab, literal_stack);
+            increment_loc_ctr(op_tab, &loc_ctr, tokens, sym_tab, literal_stack, &line_num);
 
             free_tokens(tokens);
         } else { // if it is a blank or comment line
@@ -87,16 +87,44 @@ void pass_1(FILE *pgm, HashTable *sym_tab, HashTable *op_tab) {
  * @param loc_ctr
  *              the location counter
  */
-void add_literals(Stack *lit_stack, HashTable *sym_tab, int *loc_ctr) {
+void add_literals(Stack *lit_stack, HashTable *sym_tab, int *loc_ctr, int *line_num) {
     while (!empty(lit_stack)) {
         char *lit = pop(lit_stack);
         // we do a find here because we don't want to generate an error if a
         // duplicate literal is found
-        if (find(sym_tab, lit) == NULL)
+        if (find(sym_tab, lit) == NULL) {
+            int bytes = get_bytes(&lit[1]);
             add_to_sym_tab(sym_tab, lit, *loc_ctr);
-        *loc_ctr += get_bytes(&lit[1]);
+
+            // print the literal
+            char lit_line[LINE_MAX_SIZE];
+
+            sprintf(lit_line, "%s BYTE %s\n", lit, &lit[1]);
+
+            print_line((*line_num)++, *loc_ctr, lit_line);
+            write_error((*line_num) - 1);
+
+            *loc_ctr += bytes;
+        }
         free(lit);
     }
+}
+
+
+/*
+ * Prints a line to the specified stream
+ * If the loc_ctr is less than 0, it is ommitted
+ *
+ * @param line_num
+ *              the line number
+ * @param loc_ctr
+ *              the location counter
+ * @param line
+ *              the line to print
+ */
+void print_str_line(char *line_num, int loc_ctr, char *line) {
+    if (loc_ctr >= 0)
+        printf("%s- %05X%5s%s", line_num, loc_ctr, "", line);
 }
 
 
@@ -136,8 +164,10 @@ void print_line(int line_num, int loc_ctr, char *line) {
  *              the symbol table
  * @param lit_stack
  *              the literal stack
+ * @param line_num
+ *              the line number
  */
-void increment_loc_ctr(HashTable *op_tab, int *loc_ctr, char **tokens, HashTable *sym_tab, Stack *lit_stack) {
+void increment_loc_ctr(HashTable *op_tab, int *loc_ctr, char **tokens, HashTable *sym_tab, Stack *lit_stack, int *line_num) {
     Node *opcode = find(op_tab, tokens[OPCODE]);
     if (opcode != NULL) {
         *loc_ctr += opcode->format;
@@ -168,9 +198,9 @@ void increment_loc_ctr(HashTable *op_tab, int *loc_ctr, char **tokens, HashTable
     } else if (strcmp(tokens[OPCODE], "NOBASE") == 0) {
 
     } else if (strcmp(tokens[OPCODE], "LTORG") == 0) {
-        add_literals(lit_stack, sym_tab, loc_ctr);
+        add_literals(lit_stack, sym_tab, loc_ctr, line_num);
     } else if (strcmp(tokens[OPCODE], "END") == 0) {
-        add_literals(lit_stack, sym_tab, loc_ctr);
+        add_literals(lit_stack, sym_tab, loc_ctr, line_num);
     }
 
 }
@@ -201,7 +231,6 @@ void add_to_sym_tab(HashTable *sym_tab, char *symbol, int loc_ctr) {
  * Gets the number of bytes of a byte literal string, for example:
  *   X'FEBA' -> 2 bytes
  *   C'EOF'  -> 3 bytes
- * This function will also write the appropriate error to an error file TODO
  *
  * @param str
  *              the string to check 
@@ -237,7 +266,6 @@ int get_bytes(char *str) {
         }
 
     } else {
-        printf("%s\n", str);
         set_error(INVALID_QUOTES);
     }
 

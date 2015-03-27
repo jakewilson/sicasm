@@ -58,7 +58,7 @@ char *pop(Stack *s) {
  */
 void push(Stack *s, char *str) {
     if (!full(s)) {
-        char *str_to_add = malloc(strlen(str));
+        char *str_to_add = calloc(strlen(str), sizeof *str);
         strncpy(str_to_add, str, strlen(str));
         s->stack[++(s->top)] = str_to_add;
     }
