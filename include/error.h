@@ -21,5 +21,5 @@ Error sic_error;
 #define INVALID_LIT_CHAR 5
 #define INVALID_QUOTES   6
 
-void write_error();
-void set_error(int line, int code);
+void write_error(int line);
+void set_error(int code);

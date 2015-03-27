@@ -6,6 +6,7 @@
  */
 
 #include <stdio.h>
+#include <string.h>
 
 #include "../include/error.h"
 
@@ -13,12 +14,35 @@
 /*
  * Writes the appropriate error message to stdout, given the error code
  */
-void write_error() {
+void write_error(int line) {
+    int error_len = 50;
+    char error[error_len];
     switch (sic_error.code) {
         case NEGATIVE_OPERAND:
-            printf("Negative operand on line %d.", sic_error.line);
+            strncpy(error, "Negative operand", error_len);
             break;
+        case EMPTY_ARG:
+            strncpy(error, "Operand must be provided", error_len);
+            break;
+        case DUPLICATE_SYMBOL:
+            strncpy(error, "Duplicate symbol", error_len);
+            break;
+        case ODD_BYTES:
+            strncpy(error, "Odd number of bytes", error_len);
+            break;
+        case INVALID_LIT_CHAR:
+            strncpy(error, "Literal character must be X or C", error_len);
+            break;
+        case INVALID_QUOTES:
+            strncpy(error, "Literal must be enclosed in single quotes", error_len);
+            break;
+        case NO_ERROR:
+        default: // don't write error if there isn't one
+            return;
     }
+
+    printf("ERROR: %s on line %d.\n", error, line);
+    set_error(NO_ERROR);
 }
 
 
@@ -29,7 +53,6 @@ void write_error() {
  * @param code
  *              the error code
  */
-void set_error(int line, int code) {
-    sic_error.line = line;
+void set_error(int code) {
     sic_error.code = code;
 }

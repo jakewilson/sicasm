@@ -33,34 +33,39 @@ void pass_1(FILE *pgm, HashTable *sym_tab, HashTable *op_tab) {
     char **tokens = tokenize(line);
     int loc_ctr = 0;
 
-    Stack *literal_stack = new_stack(); // keep track of all literals with a stack
 
     if (strcasecmp(tokens[OPCODE], "START") == 0) {
         int loc;
         if (convert_to_pos_int(tokens[ARG], &loc, 16)) {
             loc_ctr = loc;
         } else {
-            set_error(line_num, NEGATIVE_OPERAND);
+            set_error(NEGATIVE_OPERAND);
         }
 
         add_to_sym_tab(sym_tab, tokens[LABEL], loc_ctr);
         print_line(line_num++, loc_ctr, line);
-        write_error();
+        write_error(line_num - 1);
     }
 
     free_tokens(tokens);
+
+    Stack *literal_stack = new_stack(); // keep track of all literals with a stack
 
     // parse the file line by line
     while ((line = fgets(line, LINE_MAX_SIZE, pgm)) != NULL) {
         if (!is_comment_line(line) && !is_blank_line(line)) {
             tokens = tokenize(line);
-            // TODO check if tokens[ARG] is empty and throw error if so
+
+            if (is_empty(tokens[ARG]))
+                write_error(EMPTY_ARG);
+
             add_to_sym_tab(sym_tab, tokens[LABEL], loc_ctr);
 
             if (is_literal(tokens[ARG]))
                 push(literal_stack, tokens[ARG]);
 
             print_line(line_num++, loc_ctr, line);
+            write_error(line_num - 1);
 
             increment_loc_ctr(op_tab, &loc_ctr, tokens, sym_tab, literal_stack);
 
@@ -144,7 +149,7 @@ void increment_loc_ctr(HashTable *op_tab, int *loc_ctr, char **tokens, HashTable
         if (convert_to_pos_int(tokens[ARG], &words, 10)) {
             *loc_ctr += (WORD_LEN * words);
         } else {
-            // TODO write error: operand must be a positive number
+            set_error(NEGATIVE_OPERAND);
         }
 
     } else if (strcmp(tokens[OPCODE], "BYTE") == 0) {
@@ -155,10 +160,12 @@ void increment_loc_ctr(HashTable *op_tab, int *loc_ctr, char **tokens, HashTable
         if (convert_to_pos_int(tokens[ARG], &words, 10)) {
             *loc_ctr += words;
         } else {
-            // TODO write error: operand must be a positive number
+            set_error(NEGATIVE_OPERAND);
         }
         
     } else if (strcmp(tokens[OPCODE], "BASE") == 0) {
+
+    } else if (strcmp(tokens[OPCODE], "NOBASE") == 0) {
 
     } else if (strcmp(tokens[OPCODE], "LTORG") == 0) {
         add_literals(lit_stack, sym_tab, loc_ctr);
@@ -185,8 +192,7 @@ void add_to_sym_tab(HashTable *sym_tab, char *symbol, int loc_ctr) {
         if (find(sym_tab, symbol) == NULL) { // and the label does not already exist
             insert_sym(sym_tab, symbol, loc_ctr);
         } else {
-            // TODO write error: duplicate symbol
-            printf("ERROR: duplicate symbol %s\n", symbol);
+            set_error(DUPLICATE_SYMBOL);
         }
     }
 }
@@ -216,7 +222,7 @@ int get_bytes(char *str) {
             if (num_chars % 2 == 0) {
                 num_bytes = (num_chars / 2);
             } else {
-                // TODO write error: Odd number of X bytes found in operand field
+                set_error(ODD_BYTES);
             }
 
         } else if (*str == 'C'){
@@ -227,11 +233,12 @@ int get_bytes(char *str) {
             
             num_bytes = num_chars;
         } else {
-            // TODO write error: expected 'X' or 'C' before open quote
+            set_error(INVALID_LIT_CHAR);
         }
 
     } else {
-        // TODO write error: no quotes found in operand field
+        printf("%s\n", str);
+        set_error(INVALID_QUOTES);
     }
 
     return num_bytes;
