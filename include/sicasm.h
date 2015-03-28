@@ -40,6 +40,9 @@
 
 #define WORD_LEN 3
 
+#define PASS_1 1
+#define PASS_2 2
+
 #include "error.h"
 #include "hash_table.h"
 #include "stack.h"

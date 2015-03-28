@@ -23,6 +23,7 @@
  *              a hash table already filled with valid SIC/XE operations
  */
 void pass_1(FILE *pgm, HashTable *sym_tab, HashTable *op_tab) {
+    error_pass = PASS_1;
     char *line = calloc(LINE_MAX_SIZE, sizeof *line);
     int line_num = 1;
 

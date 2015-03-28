@@ -42,8 +42,8 @@ void write_error(int line) {
             return;
     }
 
-    error_found = TRUE;
-    printf("ERROR: %s on line %d.\n", error, line);
+    error_thrown = TRUE;
+    printf("ERROR (pass %d): %s on line %d.\n", error_pass, error, line);
     set_error(NO_ERROR);
 }
 
