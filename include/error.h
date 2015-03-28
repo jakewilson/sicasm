@@ -11,6 +11,7 @@ typedef struct Error {
 } Error;
 
 Error sic_error;
+int error_found;
 
 /* Error codes */
 #define NO_ERROR         0

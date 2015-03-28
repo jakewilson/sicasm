@@ -9,6 +9,7 @@
 #include <string.h>
 
 #include "../include/error.h"
+#include "../include/gen_ops.h"
 
 
 /*
@@ -41,6 +42,7 @@ void write_error(int line) {
             return;
     }
 
+    error_found = TRUE;
     printf("ERROR: %s on line %d.\n", error, line);
     set_error(NO_ERROR);
 }
