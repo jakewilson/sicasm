@@ -7,7 +7,6 @@
  */
 
 void add_literals(Stack *lit_stack, HashTable *sym_tab, int *loc_ctr, int *line_num);
-void print_str_line(char *line_num, int loc_ctr, char *line);
 void print_line(int line_num, int loc_ctr, char *line);
 void add_to_sym_tab(HashTable *sym_tab, char *symbol, int loc_ctr);
 void increment_loc_ctr(HashTable *op_tab, int *loc_ctr, char **tokens, HashTable *sym_tab, Stack *lit_stack, int *line_num);

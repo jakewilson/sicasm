@@ -58,7 +58,7 @@ void pass_1(FILE *pgm, HashTable *sym_tab, HashTable *op_tab) {
             tokens = tokenize(line);
 
             if (is_empty(tokens[ARG]))
-                write_error(EMPTY_ARG);
+                set_error(EMPTY_ARG);
 
             add_to_sym_tab(sym_tab, tokens[LABEL], loc_ctr);
 
@@ -109,23 +109,6 @@ void add_literals(Stack *lit_stack, HashTable *sym_tab, int *loc_ctr, int *line_
         }
         free(lit);
     }
-}
-
-
-/*
- * Prints a line to the specified stream
- * If the loc_ctr is less than 0, it is ommitted
- *
- * @param line_num
- *              the line number
- * @param loc_ctr
- *              the location counter
- * @param line
- *              the line to print
- */
-void print_str_line(char *line_num, int loc_ctr, char *line) {
-    if (loc_ctr >= 0)
-        printf("%s- %05X%5s%s", line_num, loc_ctr, "", line);
 }
 
 
