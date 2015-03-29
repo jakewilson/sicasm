@@ -66,9 +66,9 @@ void pass_1(FILE *pgm, HashTable *sym_tab, HashTable *op_tab) {
                 push(literal_stack, tokens[ARG]);
 
             print_line(line_num++, loc_ctr, line);
-            write_error(line_num - 1);
 
             increment_loc_ctr(op_tab, &loc_ctr, tokens, sym_tab, literal_stack, &line_num);
+            write_error(line_num - 1);
 
             free_tokens(tokens);
         } else { // if it is a blank or comment line
@@ -185,6 +185,8 @@ void increment_loc_ctr(HashTable *op_tab, int *loc_ctr, char **tokens, HashTable
         add_literals(lit_stack, sym_tab, loc_ctr, line_num);
     } else if (strcmp(tokens[OPCODE], "END") == 0) {
         add_literals(lit_stack, sym_tab, loc_ctr, line_num);
+    } else {
+        set_error(UNDEFINED_INS);
     }
 
 }

@@ -45,6 +45,11 @@ void write_error(int line) {
             strncpy(error, "Literal must be enclosed in single quotes", error_len);
             break;
 
+        case UNDEFINED_INS:
+            strncpy(error, "Undefined instruction", error_len);
+            break;
+
+
         case NO_ERROR:
         default: // don't write error if there isn't one
             return;

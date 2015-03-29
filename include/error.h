@@ -23,6 +23,7 @@ int error_pass; // the pass number of the error (pass 1, pass 2)
 #define ODD_BYTES        4
 #define INVALID_LIT_CHAR 5
 #define INVALID_QUOTES   6
+#define UNDEFINED_INS    7
 
 void write_error(int line);
 void set_error(int code);
