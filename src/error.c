@@ -14,6 +14,8 @@
 
 /*
  * Writes the appropriate error message to stdout, given the error code
+ * @param line
+ *              the line number of the error
  */
 void write_error(int line) {
     int error_len = 50;
@@ -22,21 +24,27 @@ void write_error(int line) {
         case NEGATIVE_OPERAND:
             strncpy(error, "Negative operand", error_len);
             break;
+
         case EMPTY_ARG:
             strncpy(error, "Operand must be provided", error_len);
             break;
+
         case DUPLICATE_SYMBOL:
             strncpy(error, "Duplicate symbol", error_len);
             break;
+
         case ODD_BYTES:
             strncpy(error, "Odd number of bytes", error_len);
             break;
+
         case INVALID_LIT_CHAR:
             strncpy(error, "Literal character must be X or C", error_len);
             break;
+
         case INVALID_QUOTES:
             strncpy(error, "Literal must be enclosed in single quotes", error_len);
             break;
+
         case NO_ERROR:
         default: // don't write error if there isn't one
             return;
@@ -50,8 +58,6 @@ void write_error(int line) {
 
 /*
  * Sets the line number and the code of sic_error
- * @param line
- *              the line number of the error
  * @param code
  *              the error code
  */
