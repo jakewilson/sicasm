@@ -19,7 +19,7 @@
  */
 void write_error(int line) {
     int error_len = 50;
-    char error[error_len];
+    char error[error_len] = {0};
     switch (sic_error.code) {
         case NEGATIVE_OPERAND:
             strncpy(error, "Negative operand", error_len);
@@ -48,7 +48,6 @@ void write_error(int line) {
         case UNDEFINED_INS:
             strncpy(error, "Undefined instruction", error_len);
             break;
-
 
         case NO_ERROR:
         default: // don't write error if there isn't one
