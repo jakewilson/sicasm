@@ -18,35 +18,35 @@
  *              the line number of the error
  */
 void write_error(int line) {
-    int error_len = 50;
-    char error[error_len] = {0};
+    char error[ERROR_LEN] = {0};
+
     switch (sic_error.code) {
         case NEGATIVE_OPERAND:
-            strncpy(error, "Negative operand", error_len);
+            strncpy(error, "Negative operand", ERROR_LEN);
             break;
 
         case EMPTY_ARG:
-            strncpy(error, "Operand must be provided", error_len);
+            strncpy(error, "Operand must be provided", ERROR_LEN);
             break;
 
         case DUPLICATE_SYMBOL:
-            strncpy(error, "Duplicate symbol", error_len);
+            strncpy(error, "Duplicate symbol", ERROR_LEN);
             break;
 
         case ODD_BYTES:
-            strncpy(error, "Odd number of bytes", error_len);
+            strncpy(error, "Odd number of bytes", ERROR_LEN);
             break;
 
         case INVALID_LIT_CHAR:
-            strncpy(error, "Literal character must be X or C", error_len);
+            strncpy(error, "Literal character must be X or C", ERROR_LEN);
             break;
 
         case INVALID_QUOTES:
-            strncpy(error, "Literal must be enclosed in single quotes", error_len);
+            strncpy(error, "Literal must be enclosed in single quotes", ERROR_LEN);
             break;
 
         case UNDEFINED_INS:
-            strncpy(error, "Undefined instruction", error_len);
+            strncpy(error, "Undefined instruction", ERROR_LEN);
             break;
 
         case NO_ERROR:

@@ -31,8 +31,21 @@ int main(int argc, char *argv[]) {
     // fill the symbol table
     pass_1(fp, sym_tab, op_tab);
 
-    if (error_thrown == FALSE)
-        pass_2();
+    if (error_thrown == FALSE) {
+        int lst_path_size = strlen(argv[1]) + strlen(LST_EXT) + 1;
+        int obj_path_size = strlen(argv[1]) + strlen(OBJ_EXT) + 1;
+
+        char *lst_path = calloc(lst_path_size, sizeof *lst_path);
+        char *obj_path = calloc(obj_path_size, sizeof *obj_path);
+
+        snprintf(lst_path, lst_path_size, "%s%s", argv[1], LST_EXT);
+        snprintf(obj_path, obj_path_size, "%s%s", argv[1], OBJ_EXT);
+
+        FILE *lst = fopen(lst_path, "w+");
+        FILE *obj = fopen(obj_path, "w+");
+
+        pass_2(fp, sym_tab, op_tab, lst, obj);
+    }
 
     fclose(fp);
 

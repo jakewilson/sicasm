@@ -15,6 +15,8 @@ Error sic_error;
 int error_thrown;
 int error_pass; // the pass number of the error (pass 1, pass 2)
 
+#define ERROR_LEN 50
+
 /* Error codes */
 #define NO_ERROR         0
 #define NEGATIVE_OPERAND 1
