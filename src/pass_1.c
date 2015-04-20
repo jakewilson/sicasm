@@ -102,8 +102,9 @@ void add_literals(Stack *lit_stack, HashTable *sym_tab, int *loc_ctr, int *line_
             // print the literal
             char lit_line[LINE_MAX_SIZE];
 
-            sprintf(lit_line, "%s BYTE %s\n", lit, &lit[1]);
+            sprintf(lit_line, "%-9s %-7s  %-s\n", lit, "BYTE", &lit[1]);
 
+            add_line(*line_num, *loc_ctr, lit_line);
             print_line((*line_num)++, *loc_ctr, lit_line);
             write_error((*line_num) - 1);
 
