@@ -12,6 +12,16 @@
 #define LST_EXT ".lst"
 #define OBJ_EXT ".obj"
 
+typedef struct Line {
+    char *obj_code;
+    int loc;
+    char *line;
+} Line;
+
+Line *file;
+
+void add_line(int line_num, int loc, char *line);
+
 #include "error.h"
 #include "hash_table.h"
 #include "stack.h"

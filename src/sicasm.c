@@ -28,6 +28,8 @@ int main(int argc, char *argv[]) {
 
     construct_op_table(op_tab);
 
+    file = calloc(100, sizeof *file);
+
     // fill the symbol table
     pass_1(fp, sym_tab, op_tab);
 
@@ -55,3 +57,8 @@ int main(int argc, char *argv[]) {
     return 0;
 }
 
+void add_line(int line_num, int loc, char *line) {
+    file[line_num].loc = loc;
+    file[line_num].line = calloc(LINE_MAX_SIZE, sizeof *(file[line_num].line));
+    strcpy(file[line_num].line, line);
+}

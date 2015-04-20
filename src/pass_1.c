@@ -34,7 +34,6 @@ void pass_1(FILE *pgm, HashTable *sym_tab, HashTable *op_tab) {
     char **tokens = tokenize(line);
     int loc_ctr = 0;
 
-
     if (strcasecmp(tokens[OPCODE], "START") == 0) {
         int loc;
         if (convert_to_pos_int(tokens[ARG], &loc, 16)) {
@@ -44,6 +43,7 @@ void pass_1(FILE *pgm, HashTable *sym_tab, HashTable *op_tab) {
         }
 
         add_to_sym_tab(sym_tab, tokens[LABEL], loc_ctr);
+        add_line(line_num, loc_ctr, line);
         print_line(line_num++, loc_ctr, line);
         write_error(line_num - 1);
     }
@@ -65,6 +65,7 @@ void pass_1(FILE *pgm, HashTable *sym_tab, HashTable *op_tab) {
             if (is_literal(tokens[ARG]))
                 push(literal_stack, tokens[ARG]);
 
+            add_line(line_num, loc_ctr, line);
             print_line(line_num++, loc_ctr, line);
 
             increment_loc_ctr(op_tab, &loc_ctr, tokens, sym_tab, literal_stack, &line_num);
@@ -76,6 +77,7 @@ void pass_1(FILE *pgm, HashTable *sym_tab, HashTable *op_tab) {
         }
     } // end while()
 
+    free(line);
 }
 
 

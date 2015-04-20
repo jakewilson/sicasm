@@ -7,6 +7,7 @@
 
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 
 #include "../include/sicasm.h"
 
@@ -25,5 +26,5 @@
  *
  */
 void pass_2(FILE *pgm, HashTable *sym_tab, HashTable *op_tab, FILE *lst, FILE *obj) {
-
+    error_pass = PASS_2;
 }
