@@ -75,6 +75,7 @@ void pass_1(FILE *pgm, HashTable *sym_tab, HashTable *op_tab) {
 
             free_tokens(tokens);
         } else { // if it is a blank or comment line
+            add_line(line_num, loc_ctr, line);
             print_line(line_num++, -1, line);
         }
     } // end while()

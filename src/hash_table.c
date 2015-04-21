@@ -52,10 +52,13 @@ void print(HashTable *table) {
  * it is added to the end of the linked list at the index of collision.
  * @param table:
  *          the Hash Table to modify
+
  * @param key:
  *          the key of the node
+
  * @param value:
  *          the value of the node
+
  * @param format
  *          the format of the node (for use by OPTAB only)
  */

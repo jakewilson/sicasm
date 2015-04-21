@@ -33,12 +33,19 @@ void pass_2(HashTable *sym_tab, HashTable *op_tab, FILE *lst, FILE *obj) {
         //print_line(line_num, -1, file[line_num++].line);
         line_num++;
 
-    char **line = tokenize(file[line_num].line);
+    char **tokens = tokenize(file[line_num++].line);
     int begin = -1;
-    convert_to_pos_int(line[ARG], &begin, 16);
-    free(line);
+    convert_to_pos_int(tokens[ARG], &begin, 16);
+    free(tokens);
 
     for (; line_num < file_size; line_num++) {
-        
+        if (!is_comment_line(file[line_num].line) && !is_blank_line(file[line_num].line)) {
+            tokens = tokenize(file[line_num].line);
+            Node *ins_node = find(op_tab, tokens[OPCODE]);
+            if (ins_node != NULL) {
+                printf("%X\n", ins_node->value);
+            }
+
+        } // end if comment() or blank()
     }
 }

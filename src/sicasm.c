@@ -46,7 +46,7 @@ int main(int argc, char *argv[]) {
         FILE *lst = fopen(lst_path, "w+");
         FILE *obj = fopen(obj_path, "w+");
 
-        pass_2(fp, sym_tab, op_tab, lst, obj);
+        pass_2(sym_tab, op_tab, lst, obj);
     }
 
     fclose(fp);
