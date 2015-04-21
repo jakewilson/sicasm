@@ -28,8 +28,10 @@ void pass_1(FILE *pgm, HashTable *sym_tab, HashTable *op_tab) {
     int line_num = 1;
 
     // eat up all initial blank and/or comment lines
-    while (is_comment_line(line = fgets(line, LINE_MAX_SIZE, pgm)) || is_blank_line(line))
+    while (is_comment_line(line = fgets(line, LINE_MAX_SIZE, pgm)) || is_blank_line(line)) {
+        add_line(line_num, -1, line);
         print_line(line_num++, -1, line);
+    }
 
     char **tokens = tokenize(line);
     int loc_ctr = 0;
@@ -77,6 +79,7 @@ void pass_1(FILE *pgm, HashTable *sym_tab, HashTable *op_tab) {
         }
     } // end while()
 
+    file_size = line_num;
     free(line);
 }
 

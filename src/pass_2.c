@@ -25,6 +25,20 @@
  *              pointer to the .obj file
  *
  */
-void pass_2(FILE *pgm, HashTable *sym_tab, HashTable *op_tab, FILE *lst, FILE *obj) {
+void pass_2(HashTable *sym_tab, HashTable *op_tab, FILE *lst, FILE *obj) {
     error_pass = PASS_2;
+    int line_num = 1;
+
+    while (is_comment_line(file[line_num].line) || is_blank_line(file[line_num].line))
+        //print_line(line_num, -1, file[line_num++].line);
+        line_num++;
+
+    char **line = tokenize(file[line_num].line);
+    int begin = -1;
+    convert_to_pos_int(line[ARG], &begin, 16);
+    free(line);
+
+    for (; line_num < file_size; line_num++) {
+        
+    }
 }

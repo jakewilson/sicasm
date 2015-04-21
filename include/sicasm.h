@@ -19,6 +19,7 @@ typedef struct Line {
 } Line;
 
 Line *file;
+int file_size;
 
 void add_line(int line_num, int loc, char *line);
 
